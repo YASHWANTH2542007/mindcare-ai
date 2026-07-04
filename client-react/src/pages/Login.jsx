@@ -23,7 +23,8 @@ export default function Login() {
       await login(email, password);
       navigate('/dashboard');
     } catch (err) {
-      setError(err.response?.data?.error || 'Something went wrong signing you in.');
+      const serverError = err.response?.data?.error;
+      setError(typeof serverError === 'string' ? serverError : 'Something went wrong signing you in.');
     } finally {
       setBusy(false);
     }

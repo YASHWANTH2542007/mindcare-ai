@@ -26,7 +26,8 @@ export default function Signup() {
       await signup(form);
       navigate('/dashboard');
     } catch (err) {
-      setError(err.response?.data?.error || 'Something went wrong creating your account.');
+      const serverError = err.response?.data?.error;
+      setError(typeof serverError === 'string' ? serverError : 'Something went wrong creating your account.');
     } finally {
       setBusy(false);
     }

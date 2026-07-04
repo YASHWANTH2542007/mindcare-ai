@@ -52,7 +52,8 @@ export default function CheckIn() {
       setResult(res.data);
       setStep(2);
     } catch (err) {
-      setError(err.response?.data?.error || 'Something went wrong analyzing your check-in.');
+      const serverError = err.response?.data?.error;
+      setError(typeof serverError === 'string' ? serverError : 'Something went wrong analyzing your check-in.');
     } finally {
       setBusy(false);
     }
