@@ -1,14 +1,12 @@
 /**
- * Calls the Anthropic API to generate personalized wellness recommendations
+ * Calls the Gemini API to generate personalized wellness recommendations
  * based on a student's check-in data. Falls back to rule-based recommendations
  * (see stressEngine.js) if the API call fails for any reason — so the app
  * stays usable even without connectivity or a valid key.
  */
 
 const { fallbackRecommendations } = require('./stressEngine');
-
-const ANTHROPIC_API_URL = 'https://api.anthropic.com/v1/messages';
-const MODEL = process.env.ANTHROPIC_MODEL || 'claude-sonnet-4-5';
+const { callGemini } = require('./geminiClient');
 
 function buildPrompt({ mood, sleepHrs, studyLoad, energy, tags, note, stressScore, stressLevel }) {
   const tagList = tags.length ? tags.join(', ') : 'none specified';
@@ -37,47 +35,22 @@ Generate 3 to 5 cards, prioritized by what would help most given their specific 
 }
 
 async function generateRecommendations(checkInData) {
-  const apiKey = process.env.ANTHROPIC_API_KEY;
-
-  if (!apiKey) {
-    console.warn('⚠️  ANTHROPIC_API_KEY not set — using rule-based fallback recommendations.');
+  if (!process.env.GEMINI_API_KEY) {
+    console.warn('⚠️  GEMINI_API_KEY not set — using rule-based fallback recommendations.');
     return { ...fallbackRecommendations(checkInData), source: 'fallback-rule-based', model: '' };
   }
 
   try {
-    const response = await fetch(ANTHROPIC_API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01',
-      },
-      body: JSON.stringify({
-        model: MODEL,
-        max_tokens: 700,
-        messages: [{ role: 'user', content: buildPrompt(checkInData) }],
-      }),
-      signal: AbortSignal.timeout(15000),
-    });
+    const { text, model } = await callGemini(buildPrompt(checkInData), { maxTokens: 700 });
 
-    if (!response.ok) {
-      const errBody = await response.text().catch(() => '');
-      throw new Error(`Anthropic API ${response.status}: ${errBody.slice(0, 200)}`);
-    }
-
-    const data = await response.json();
-    const rawText = data?.content?.[0]?.text?.trim();
-
-    if (!rawText) throw new Error('Empty response from Anthropic API');
-
-    const cleaned = rawText.replace(/^```json\s*/i, '').replace(/```\s*$/, '');
+    const cleaned = text.replace(/^```json\s*/i, '').replace(/```\s*$/, '');
     const parsed = JSON.parse(cleaned);
 
     if (!parsed.summary || !Array.isArray(parsed.cards)) {
       throw new Error('Malformed JSON shape from LLM response');
     }
 
-    return { summary: parsed.summary, cards: parsed.cards, source: 'llm', model: MODEL };
+    return { summary: parsed.summary, cards: parsed.cards, source: 'llm', model };
   } catch (err) {
     console.error('⚠️  LLM recommendation generation failed, using fallback:', err.message);
     return { ...fallbackRecommendations(checkInData), source: 'fallback-rule-based', model: '' };

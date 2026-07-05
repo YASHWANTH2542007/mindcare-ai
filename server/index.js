@@ -18,6 +18,9 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // ---------- Middleware ----------
+// In production (split deployment), set FRONTEND_URL to your Vercel domain
+// so only your frontend can call this API. Left unset, all origins are
+// allowed — fine for local dev, not recommended once this is public.
 const allowedOrigin = process.env.FRONTEND_URL;
 app.use(cors(allowedOrigin ? { origin: allowedOrigin } : {}));
 app.use(express.json({ limit: '100kb' }));

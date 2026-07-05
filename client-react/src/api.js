@@ -1,7 +1,8 @@
 import axios from 'axios';
 
-// In dev, Vite proxies /api to localhost:5000. In production (Vercel),
-// VITE_API_BASE_URL points to your Render backend, e.g.
+// In dev, Vite proxies /api to localhost:5000 (see vite.config.js), so the
+// relative path works. In production with a split deployment (Vercel +
+// Render), set VITE_API_BASE_URL to the Render backend's full URL, e.g.
 // https://mindcare-backend.onrender.com/api
 const baseURL = import.meta.env.VITE_API_BASE_URL || '/api';
 

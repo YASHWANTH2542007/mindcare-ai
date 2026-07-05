@@ -16,9 +16,9 @@ const checks = [
     hint: "Set a real random secret in .env, e.g. run: openssl rand -hex 32",
   },
   {
-    name: 'ANTHROPIC_API_KEY',
-    ok: Boolean(process.env.ANTHROPIC_API_KEY),
-    hint: 'Optional — without this, AI recommendations use the rule-based fallback (app still works).',
+    name: 'GEMINI_API_KEY',
+    ok: Boolean(process.env.GEMINI_API_KEY),
+    hint: 'Optional — without this, AI recommendations use the rule-based fallback (app still works). Get a free key at https://aistudio.google.com/apikey',
     warn: true,
   },
 ];
