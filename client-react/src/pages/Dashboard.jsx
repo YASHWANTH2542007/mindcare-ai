@@ -33,7 +33,7 @@ export default function Dashboard() {
   }));
 
   return (
-    <div style={{ padding: '36px 40px', maxWidth: 1100 }}>
+    <div className="page-padding" style={{ padding: '36px 40px', maxWidth: 1100 }}>
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
         <h1 style={{ fontSize: 28, marginBottom: 4 }}>Hey {user?.name?.split(' ')[0]} 👋</h1>
         <p style={{ color: 'var(--text-muted)', marginBottom: 28 }}>
@@ -54,7 +54,7 @@ export default function Dashboard() {
           </Link>
         </NeuCard>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: '260px 1fr', gap: 24 }}>
+        <div className="dashboard-grid">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}

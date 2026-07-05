@@ -36,7 +36,7 @@ export default function AskAI() {
   }
 
   return (
-    <div style={{ padding: '36px 40px', maxWidth: 780, display: 'flex', flexDirection: 'column', height: '100vh' }}>
+   <div className="page-padding" style={{ padding: '36px 40px', maxWidth: 780, display: 'flex', flexDirection: 'column', height: '100vh' }}>
       <h1 style={{ fontSize: 28, marginBottom: 4 }}>Ask AI</h1>
       <p style={{ color: 'var(--text-muted)', marginBottom: 20 }}>
         Free-form questions, answered with your latest check-in as context.

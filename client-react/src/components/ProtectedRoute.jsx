@@ -16,7 +16,7 @@ export default function ProtectedRoute({ children }) {
   if (!user) return <Navigate to="/login" replace />;
 
   return (
-    <div style={{ display: 'flex' }}>
+    <div className="app-shell">
       <Sidebar />
       <div style={{ flex: 1 }}>{children}</div>
     </div>

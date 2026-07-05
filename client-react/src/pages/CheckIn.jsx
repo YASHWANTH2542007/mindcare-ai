@@ -60,7 +60,7 @@ export default function CheckIn() {
   }
 
   return (
-    <div style={{ padding: '36px 40px', maxWidth: 900 }}>
+    <div className="page-padding" style={{ padding: '36px 40px', maxWidth: 900 }}>
       <h1 style={{ fontSize: 28, marginBottom: 4 }}>Mood check-in</h1>
       <p style={{ color: 'var(--text-muted)', marginBottom: 28 }}>
         A few quick questions, then MindCare AI gives you a plan.

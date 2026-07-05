@@ -16,16 +16,8 @@ export default function Sidebar() {
       initial={{ x: -40, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
       transition={{ duration: 0.5 }}
-      style={{
-        width: 240,
-        minHeight: '100vh',
-        padding: '32px 20px',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 8,
-        position: 'sticky',
-        top: 0,
-      }}
+      className="sidebar"
+      style={{ padding: '32px 20px' }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '0 8px', marginBottom: 30 }}>
         <div
